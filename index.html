@@ -1,0 +1,269 @@
+<!-- ✅ نسخة معدّلة بخلفية عنكبوتية حمراء فقط -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>habib z</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100vh;
+      background: black;
+      color: rgba(255, 255, 255, 0.767);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 60px 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      z-index: 10;
+      transform: scale(1.3);
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 30px;
+      background: linear-gradient(90deg, #ffffff18, hsla(0, 70%, 24%, 0.616), #ffffff33);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .download-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 20px;
+    }
+
+    .circle-img {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.089);
+      transition: 0.3s;
+    }
+
+    .circle-img:hover {
+      transform: scale(1.1);
+    }
+
+    .download-btn {
+      background: rgb(0, 0, 0);
+      color: rgba(104, 24, 24, 0.795);
+      border: none;
+      padding: 16px 28px;
+      font-size: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .download-btn:hover {
+      background: rgba(143, 145, 160, 0.37);
+    }
+
+    .discord-profile {
+      margin-top: 30px;
+    }
+
+    .discord-profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .feedback-box {
+      margin-top: 30px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      resize: none;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .send-btn {
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .send-btn:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <audio id="music" autoplay loop>
+    <source src="mp3/habib.mp3" type="audio/mpeg">
+    متصفحك لا يدعم تشغيل الصوت.
+  </audio>
+
+  <div class="container">
+    <h1> ☠ Habib ne suit pas les règles, il les crée  ☠</h1>
+
+    <div class="download-wrapper">
+      <img src="https://media.discordapp.net/attachments/1399130614036304043/1399557280042717285/images.jpg?ex=68896eca&is=68881d4a&hm=f210080def55feb6bde6b3181b9315e4a6a3aa236b880d07d79ab51e1e129142&=&format=webp" alt="Icon" class="circle-img">
+      <a href="" download="ملف-مطلوب.zip">
+        <button class="download-btn"> HABIB Z </button>
+      </a>
+    </div>
+
+    <div class="audio-controls">
+      <input type="range" min="0" max="1" step="0.01" value="1" id="volumeSlider" onchange="setVolume(this.value)">
+    </div>
+
+    <div class="discord-profile">
+      <img src="https://media.discordapp.net/attachments/1399130614036304043/1399557280042717285/images.jpg?ex=68896eca&is=68881d4a&hm=f210080def55feb6bde6b3181b9315e4a6a3aa236b880d07d79ab51e1e129142&=&format=webp" alt="Discord Profile">
+      <p>8w_ii</p>
+    </div>
+
+    <div class="feedback-box">
+      <textarea id="feedback" rows="4" placeholder="اكتب تقييمك هنا..."></textarea>
+      <br>
+      <button class="send-btn" onclick="sendFeedback()">إرسال التقييم</button>
+    </div>
+  </div>
+
+  <!-- ✅ سكريبت خلفية شبكة العنكبوت الحمراء فقط -->
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    const particles = [];
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = Math.random() * 2 + 1;
+        this.color = "rgba(255,0,0,0.8)";
+        this.dx = (Math.random() - 0.5) * 1;
+        this.dy = (Math.random() - 0.5) * 1;
+      }
+
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+        if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(255, 0, 0, 0.3)";
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    function initParticles() {
+      for (let i = 0; i < 80; i++) {
+        particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      particles.push(new Particle(e.clientX, e.clientY));
+      if (particles.length > 100) particles.shift();
+    });
+
+    initParticles();
+    animate();
+  </script>
+
+  <!-- ✅ صوت الخلفية -->
+  <script>
+    const audio = document.getElementById("music");
+    const volumeSlider = document.getElementById("volumeSlider");
+
+    function setVolume(val) {
+      audio.volume = val;
+    }
+
+    window.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
+    });
+
+    function sendFeedback() {
+      const content = document.getElementById("feedback").value;
+      if (!content.trim()) return alert("❌ الرجاء كتابة شيء أولاً.");
+
+      fetch("https://discord.com/api/webhooks/1399558939762491516/0W_iorrXXBmbR9vVaxdBIMtVAQZmrpjddK6s89FiQNvo1NU_4J_ejt_cPhQKTPdfyW5F", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: "**📩 تقييم جديد:**\n" + content })
+      }).then(() => {
+        alert("✅ تم إرسال التقييم بنجاح!");
+        document.getElementById("feedback").value = "";
+      }).catch(() => {
+        alert("❌ فشل في إرسال التقييم.");
+      });
+    }
+  </script>
+</body>
+</html>
